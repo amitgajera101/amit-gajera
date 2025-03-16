@@ -1,0 +1,33 @@
+.custom-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+@media screen and (max-width: 989px) {
+
+    .custom-container {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+
+}
+
+@media screen and (min-width: 750px) {
+    .desktop-hide {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 749px) {
+
+    .mobile-hide {
+        display: none !important;
+    }
+    
+    .custom-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

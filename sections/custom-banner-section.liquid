@@ -1,0 +1,311 @@
+{{ 'custom-banner-section.css' | asset_url | stylesheet_tag }}
+
+{% style  %}
+    
+    #section-{{section.id}} .custom__banner--top {
+        --bg-color:{{ section.settings.top_bg_color}};
+        --text-color:{{ section.settings.top_text_color}};
+        --button-bg-color:{{ section.settings.top_button_bg_color }};
+        --button-text-color:{{ section.settings.top_button_text_color }};
+        --button-bg-hover-color:{{ section.settings.top_button_bg_hover_color }};
+        --button-text-hover-color:{{ section.settings.top_button_text_hover_color }};
+    }
+    #section-{{section.id}} .custom__banner--main {
+        --bg-color:{{ section.settings.main_bg_color}};
+        --text-color:{{ section.settings.main_text_color}};
+        --button-bg-color:{{ section.settings.main_button_bg_color }};
+        --button-text-color:{{ section.settings.main_button_text_color }};
+        --button-bg-hover-color:{{ section.settings.main_button_bg_hover_color }};
+        --button-text-hover-color:{{ section.settings.main_button_text_hover_color }};
+    }
+    #section-{{section.id}} .custom__banner--bottom {
+        --bg-color:{{ section.settings.bottom_bg_color}};
+        --text-color:{{ section.settings.bottom_text_color}};
+    }
+
+{% endstyle %}
+{% liquid
+    assign desktop_main_image = section.settings.desktop_main_image
+    assign mobile_main_image = section.settings.mobile_main_image | default: section.settings.desktop_main_image
+%}
+<div class="custom-banner-section" id="section-{{section.id}}">
+    <div class="custom__banner--top">
+        <div class="cb__top--mobile">
+            <div class="cb__top--toggle"></div>
+            {% if section.settings.button_text != blank %}
+                <div class="cb__top--logo">
+                    <a href="/">
+                        <img src="{{ section.settings.logo | image_url: width: '152px' }}"/>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="cb__top--wrapper custom-container">
+            {% if section.settings.button_text != blank %}
+                <div class="cb__top--logo">
+                    <a href="/">
+                        <img src="{{ section.settings.logo | image_url: width: '152px' }}"/>
+                    </a>
+                </div>
+            {% endif %}
+            {% if section.settings.text != blank %}
+                <div class="cb__top--text">
+                    <p>{{ section.settings.text }}</p>
+                </div>
+            {% endif %}
+            {% if section.settings.button_text != blank %}
+                <div class="cb__top--button"> 
+                    <a class="custom--btn" href="{{ section.settings.button_url }}">
+                        <span>{{ section.settings.button_text }}</span>
+                        {% render 'button-arrow' %}
+                    </a>    
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="custom__banner--main">
+        <div class="cb__main--image">
+            {%- liquid
+              assign height = auto
+              assign sizes = '100vw'
+              assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+              assign fetch_priority = 'high'
+            -%}
+
+            <div class="mobile-hide">
+                {% if desktop_main_image != blank %}
+                    {{
+                        desktop_main_image
+                        | image_url: width: 3840
+                        | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                    }}
+                {% else %}
+                    {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}  
+                {% endif %}
+            </div>
+            <div class="desktop-hide">
+                {% if mobile_main_image != blank %}
+                    {{
+                        mobile_main_image
+                        | image_url: width: 750
+                        | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                    }}
+                {% else %}
+                    {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}  
+                {% endif %}
+            </div>
+            
+        </div>
+        {% if section.settings.main_title != blank or section.settings.main_text != blank or section.settings.main_button_text != blank %}
+            <div class="cb__main--content">
+                <div class="cb__main--text">
+                    <h2>{{ section.settings.main_title}}</h2>
+                    {{section.settings.main_text}}
+                </div>
+                {% if section.settings.main_button_text != blank %}
+                    <div class="cb__main--button">
+                        <a class="custom--btn" href="{{section.settings.main_button_url}}">
+                            <span>{{section.settings.main_button_text}}</span>
+                            {% render 'button-arrow' %}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    {% if section.settings.bottom_text != blank %}
+        <div class="custom__banner--bottom">
+            <div class="custom__banner--wrapper container">
+                <p>{{ section.settings.bottom_text }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', () => {
+
+        let buttonElment = document.querySelector('.custom__banner--top .cb__top--mobile');
+        let parentElement = document.querySelector('.custom__banner--top');
+
+        if(buttonElment) {
+            buttonElment.addEventListener('click', ()=>{
+                if(parentElement){
+                    parentElement.classList.toggle('top-open');
+                }
+            });
+        }
+    });
+    
+</script>
+
+{% schema %}
+    {
+        "name": "Custom Banner Section",
+        "limit": 1,
+        "settings": [
+            {
+                "type":"header",
+                "content":"Banner top content"
+            },
+            {
+                "type":"image_picker",
+                "id":"logo",
+                "label":"Logo image"
+            },
+            {
+                "type":"text",
+                "id":"text",
+                "label":"Text",
+                "default": "Find the ideal gift for your loved ones."
+            },
+            {
+                "type":"text",
+                "id":"button_text",
+                "label":"Button Text",
+                "default": "Shop Now"
+            },
+            {
+                "type":"url",
+                "id":"button_url",
+                "label":"Button Link"
+            },
+            {
+                "type":"color",
+                "id":"top_bg_color",
+                "label":"Backgrpund Color",
+                "default": "#f5f5f5"
+            },
+            {
+                "type":"color",
+                "id":"top_text_color",
+                "label":"Text Color",
+                "default": "#000000"
+            },
+            {
+                "type":"color",
+                "id":"top_button_bg_color",
+                "label":"Button Background Color",
+                "default": "#FFF544"
+            },
+            {
+                "type":"color",
+                "id":"top_button_text_color",
+                "label":"Button Text Color",
+                "default": "#000000"
+            },
+            {
+                "type":"color",
+                "id":"top_button_bg_hover_color",
+                "label":"Button Background hover Color",
+                "default": "#000000"
+            },
+            {
+                "type":"color",
+                "id":"top_button_text_hover_color",
+                "label":"Button Text Hover Color",
+                "default": "#ffffff"
+            },
+            {
+                "type":"header",
+                "content":"Banner Main content"
+            },
+            {
+                "type":"image_picker",
+                "id":"desktop_main_image",
+                "label":"Desktop Main Banner Image"
+            },
+            {
+                "type":"image_picker",
+                "id":"mobile_main_image",
+                "label":"Mobile Main Banner Image"
+            },
+            {
+                "type":"text",
+                "id":"main_title",
+                "label":"Main Title",
+                "default": "The Gift Guide"
+            },
+            {
+                "type":"richtext",
+                "id":"main_text",
+                "label":"Main text",
+                "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>"
+            },
+            {
+                "type":"text",
+                "id":"main_button_text",
+                "label":"Main Button Text",
+                "default": "Shop Now"
+            },
+            {
+                "type":"url",
+                "id":"main_button_url",
+                "label":"Main Button Link"
+            },
+            {
+                "type":"color",
+                "id":"main_bg_color",
+                "label":"Backgrpund Color",
+                "default": "#ffffff"
+            },
+            {
+                "type":"color",
+                "id":"main_text_color",
+                "label":"Text Color",
+                "default": "#000000"
+            },
+            {
+                "type":"color",
+                "id":"main_button_bg_color",
+                "label":"Button Background Color",
+                "default": "#000000"
+            },
+            {
+                "type":"color",
+                "id":"main_button_text_color",
+                "label":"Button Text Color",
+                "default": "#ffffff"
+            },
+            {
+                "type":"color",
+                "id":"main_button_bg_hover_color",
+                "label":"Button Background hover Color",
+                "default": "#FFF544"
+            },
+            {
+                "type":"color",
+                "id":"main_button_text_hover_color",
+                "label":"Button Text Hover Color",
+                "default": "#000000"
+            },
+            {
+                "type":"header",
+                "content":"Banner Bottom content"
+            },
+            {
+                "type":"text",
+                "id":"bottom_text",
+                "label":"Bottom Text",
+                "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+            },
+            {
+                "type":"color",
+                "id":"bottom_bg_color",
+                "label":"Backgrpund Color",
+                "default": "#f5f5f5"
+            },
+            {
+                "type":"color",
+                "id":"bottom_text_color",
+                "label":"Text Color",
+                "default": "#000000"
+            }
+        ],
+        "presets":[
+            {
+                "name":"Custom Banner Section"
+            }
+        ]
+    }
+{% endschema %}
