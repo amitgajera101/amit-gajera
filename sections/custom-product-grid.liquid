@@ -1,0 +1,156 @@
+{{ 'custom-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'qv-product-modal.js' |  asset_url |  script_tag }}
+{% style  %}
+    
+    #section-{{section.id}} {
+        --bg-color:{{ section.settings.bg_color}};
+        --text-color:{{ section.settings.text_color}};
+        --PT: {{section.settings.padding_top}}px;
+        --PB: {{section.settings.padding_bottom}}px;
+    }
+    
+{% endstyle %}
+<div class="custom-product-grid" id="section-{{section.id}}">
+    <div class="custom-container">
+        {%if section.settings.title != blank %}
+            <div class="cp_grid--header">
+                <h2>{{ section.settings.title}}</h2>
+            </div>
+        {% endif %}
+        <div class="cp_grid--content">
+            <div class="cp_grid--list">
+                {% for block in section.blocks %}
+                    {%  assign product = block.settings.product %}
+                    <div class="cp_grid--item">
+                        <div class="cp_grid--image">
+                            {% if product.featured_image != blank %}
+                                <img src="{{ product.featured_image | image_url: width: '500px' }}"/>
+                            {% else %}
+                                {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}  
+                            {% endif %}
+                        </div>
+                        <quick-button data-product-page-url="{{ product.url | split: "?" | first | append: '?view=custom-quick-product' }}" class="cp_grid--button" style="left:{{block.settings.position_left}}%; top:{{block.settings.position_top}}%;">
+                            {% render 'icon-plus' %}
+                        </quick-button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% assign autoProduct = section.settings.automatic_product %}
+        {% assign target_variant_title = 'M / Black' %}
+        {% assign auto_variant_id = null %}
+
+        {% if autoProduct != blank %}
+            {% for variant in autoProduct.variants %}
+                {% if variant.title == target_variant_title %}
+                    {% assign auto_variant_id = variant.id %}
+                    {% break %}
+                {% endif %}
+            {% endfor %}
+
+            {% if auto_variant_id == null %}
+                {% for variant in autoProduct.variants %}
+                    {% if variant.available %}
+                    {% assign auto_variant_id = variant.id %}
+                    {% break %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <div class="automatic-product" data-product-variant-id="{{auto_variant_id}}"></div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Custom Product Grid",
+        "settings": [
+            {
+                "type":"text",
+                "id":"title",
+                "label":"Heading",
+                "default": "Tisso vison in the wild"
+            },
+            {
+                "type": "product",
+                "id":"automatic_product",
+                "label":"Select Product",
+                "info":"When any product with variant options Black and Medium is added to the cart"
+            },
+            {
+                "type":"color",
+                "id":"bg_color",
+                "label":"Backgrpund Color",
+                "default": "#ffffff"
+            },
+            {
+                "type":"color",
+                "id":"text_color",
+                "label":"Text Color",
+                "default": "#000000"
+            },
+            {
+                "type": "range",
+                "id": "padding_top",
+                "min": 0,
+                "max": 100,
+                "step": 2,
+                "unit": "px",
+                "label": "Padding Top",
+                "default": 50
+            },
+            {
+                "type": "range",
+                "id": "padding_bottom",
+                "min": 0,
+                "max": 100,
+                "step": 2,
+                "unit": "px",
+                "label": "Padding Bottom",
+                "default": 50
+            }
+        ],
+        "blocks": [
+            {
+                "name": "Product Item",
+                "type": "product",
+                "limit": 6,
+                "settings": [
+                    {
+                        "type": "product",
+                        "id": "product",
+                        "label": "Select Product"
+                    },
+                    {
+                        "type": "range",
+                        "id": "position_left",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "unit": "%",
+                        "label": "Quick Button Position Left",
+                        "default": 50
+                    },
+                    {
+                        "type": "range",
+                        "id": "position_top",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "unit": "%",
+                        "label": "Quick Button Position Top",
+                        "default": 50
+                    }
+                ]
+            }
+        ],
+        "presets":[
+            {
+                "name":"Custom Product Grid"
+            }
+        ]
+    }
+{% endschema %}

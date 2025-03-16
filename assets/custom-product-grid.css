@@ -1,0 +1,425 @@
+.custom-product-grid {
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding-top: var(--PT);
+    padding-bottom: var(--PB);
+}
+
+.custom-product-grid .cp_grid--list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.custom-product-grid .cp_grid--list .cp_grid--item {
+    width: calc(33.33% - 2/3 * 20px);
+    flex: 0 0 calc(33.33% - 2/3 * 20px);
+    position: relative;
+}
+
+.cp_grid--list .cp_grid--image {
+    position: relative;
+    padding-top: 102.4%;
+    overflow: hidden;
+}
+
+.cp_grid--list .cp_grid--image img, .cp_grid--list .cp_grid--image svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+}
+
+.cp_grid--list .cp_grid--button {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    background: rgba(248, 248, 248, 0.9);
+    border-radius: 50%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.custom-product-grid .cp_grid--header h2 {
+    margin: 0 0 30px;
+    font-size: 36px;
+    line-height: 120%;
+    color: inherit;
+    font-family: "Lustria", serif;
+}
+
+/* modal css start */
+.qv-product-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000b3;
+    z-index: 9999;
+    display: flex;
+    overflow: auto;
+    padding: 20px 0;
+}
+
+.qv-modal-open {
+    overflow: hidden;
+}
+
+.qv-product-modal .qv-modal-wrapper {
+    display: flex;
+    width: 100%;
+    background: #fff;
+    max-width: 311px;
+    position: relative;
+    margin: auto;
+}
+
+.qv-product-modal .qv-modal-wrapper .product-quick-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 36px 20px 25px;
+    color: #000;
+}
+
+.qv-product-modal .qv-modal-wrapper .product_quick--info {
+    display: flex;
+    gap: 8px;
+}
+
+.product_quick--info .product_quick--image {
+    width: 120px;
+}
+
+.product_quick--info .product_quick--image img {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product_quick--info .product_quick--content {
+    width: calc(100% - 130px);
+}
+
+.product-quick-block .product_quick--content h3 {
+    margin: 0 0 20px;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: 0px;
+}
+
+.qv-product-modal .qv-modal-close {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.qv-product-modal .qv-modal-wrapper quickview-popup-content {
+    width: 100%;
+}
+
+.product_quick--price {
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 120%;
+    color: inherit;
+    font-family: "Lustria", serif;
+}
+
+.product_quick--rte {
+    margin-top: 12px;
+}
+
+.product_quick--rte p {
+    font-size: 14px;
+    line-height: 110%;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+
+.product-quick-block .qv__cart--submit button {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    height: 45px;
+    border: none;
+    border-radius: 0;
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 400;
+    transition: all 0.3s ease-in-out 0s;
+    line-height: 1;
+}
+
+.product-quick-block .qv__cart--submit button:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 0%;
+    height: 100%;
+    background: #FFF544;
+    transition: all .3s ease 0s;
+    opacity: 0;
+}
+
+.product-quick-block .qv__cart--submit button span,
+.product-quick-block .qv__cart--submit button svg {
+    position: relative;
+}
+
+.product-quick-block .qv__cart--submit button:hover:before,
+.product-quick-block .qv__cart--submit button:focus:before {
+    opacity: 1;
+    width: 100%;
+}
+
+.product-quick-block .qv__cart--submit button:hover,
+.product-quick-block .qv__cart--submit button:focus {
+    /* background: #FFF544; */
+    color: #000000;
+}
+
+.product-quick-block .qv__cart--submit button svg path {
+    fill: currentColor;
+}
+
+.product-quick-block .qv__cart--submit {
+    margin-top: 51px;
+}
+
+.qv__product--variant {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.qv__product--variant .qv_option--item[name="color"] {
+    order: -1;
+}
+
+.qv__product--variant .option-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    line-height: 130%;
+    margin: 0 0 6px;
+}
+
+/* custom dropdown style */
+
+.custom-dropdown {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+}
+  
+.custom-dropdown__selected {
+    padding: 11px 63px 11px 13px;
+    background: #fff;
+    position: relative;
+    font-size: 16px;
+    line-height: 1;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.custom-dropdown .custom-dropdown__selected:before {
+    position: absolute;
+    content: "";
+    right: 55px;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: #000;
+}
+
+.custom-dropdown .custom-dropdown__selected:after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    border-top: 2px solid #000;
+    border-right: 2px solid #000;
+    width: 12px;
+    height: 12px;
+    transform: rotate(135deg);
+    top: 50%;
+    margin-top: -8px;
+    border-radius: 0;
+}
+
+.custom-dropdown__options {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #000;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+    margin: -1px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.custom-dropdown__options.active {
+display: block;
+}
+
+.custom-dropdown__option {
+padding: 10px;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.custom-dropdown__option:hover,
+.custom-dropdown__option.selected {
+    background: #000;
+    color: #fff;
+}
+
+/* variant radio style */
+.qv_option-radio--list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.qv_option-radio--list .qv_option--radio-item {
+    position: relative;
+    border: 1px solid #000;
+    width: 50%;
+    margin-top: -1px;
+    padding: 0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0;
+}
+
+.qv_option-radio--list .qv_option--radio-item:nth-child(2n) {
+    margin-left: -1px;
+}
+
+.qv_option-radio--list .qv_option--radio-item .qv_option-text {
+    padding-left: 15px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.qv_option-radio--list .qv_option--radio-item input[type="radio"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.qv_option--radio-item .qv-color-line {
+    width: 6px;
+    height: 100%;
+    display: inline-flex;
+    position: absolute;
+    left: 0;
+    border-right: 1px solid #000;
+    top: 0;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.qv_option-radio--list .qv_option--radio-item input[type="radio"]:checked + .qv_option-text {
+    background: #000;
+    color: #fff;
+}
+
+.custom-dropdown.error .custom-dropdown__selected {
+    border-color: #ff0000;
+}
+
+.custom-dropdown .custom-radio-btn {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 749px) {
+    
+    .custom-product-grid {
+        padding-top: 40px;
+        padding-bottom: 24px;
+    }
+
+    .custom-product-grid .cp_grid--list {
+        display: flex;
+        gap: 4px;
+    }
+
+    .custom-product-grid .cp_grid--list .cp_grid--item {
+        width: calc(50% - 2px);
+        flex: 0 0 calc(50% - 2px);
+    }
+
+    .custom-product-grid .cp_grid--header h2 {
+        margin: 0 0 20px;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .custom-product-grid .cp_grid--header h2 {
+        margin: 0 0 20px;
+        font-size: 24px;
+        text-align: center;
+    }
+    
+    .custom-product-grid {
+        padding-top: 40px;
+        padding-bottom: 24px;
+    }
+    
+    .cp_grid--list .cp_grid--button {
+        right: 50px;
+        left: auto !important;
+        top: 18px !important;
+        width: 15px;
+        height: 15px;
+    }
+    
+    .cp_grid--list .cp_grid--button svg {
+        max-width: 8px;
+    }
+}

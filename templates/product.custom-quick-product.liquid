@@ -1,0 +1,118 @@
+<div class="product-quick-block">
+    <div class="product_quick--info">
+        <div class="product_quick--image">
+            <img src="{{ product.featured_image |  image_url: width: '300px' }}" alt="{{product.title}}" />
+        </div>
+        <div class="product_quick--content">
+            <h3>{{ product.title | escape }}</h3>   
+            <div class="product_quick--price">
+                <div class="pq--price" qv-price-main>
+                    <span qv-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+                    <span>
+                    <s qv-compare-at-price>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+                    </span>
+                </div>
+            </div>
+            <div class="product_quick--rte">
+                {{ product.description |  truncate: 200 }}
+            </div>
+        </div>
+    </div>
+    <div class="product_quick-form--info">
+        {% form 'product', product, id: '' %}
+            <input type="hidden" name="quantity" value="{{ product.selected_or_first_available_variant.quantity_rule.min }}">
+            <div class="qv__product--variant" qv-variant-selects>
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            {% assign product_selector = 'radio' %}
+            {%- unless product.has_only_default_variant -%}
+              {%- for option in product.options_with_values -%}
+                {%- if product_selector == 'radio' and option.name == 'Color' -%}
+                  <div class="qv_option--item qv_option--button" id="ProductSelect-option-{{ forloop.index0 }}" name="{{ option.name | handleize }}">
+                    <label class="option-label">
+                      {{ option.name | escape }}
+                    </label>
+                    <div class="qv_option-radio--list">
+                        {%- for value in option.values -%}
+                            {%- assign variant_label_state = true -%}
+                                {%- if product.options.size == 1 -%}
+                                {%- unless product.variants[forloop.index0].available -%}
+                                {%- assign variant_label_state = false -%}
+                                {%- endunless -%}
+                            {%- endif -%}
+                                <label class="qv_option--radio-item" for="ProductSelect-option-{{ option.name | handleize }}-{{ value | escape }}">
+                                    <input
+                                    type="radio"
+                                    {% if option.selected_value == value %}
+                                        checked="checked"
+                                    {% endif %}
+                                    {% unless variant_label_state %}
+                                        disabled="disabled"
+                                    {% endunless %}
+                                    value="{{ value | escape }}"
+                                    data-index="option{{ forloop.index }}"
+                                    name="{{ option.name | handleize }}"
+                                    id="ProductSelect-option-{{ option.name | handleize }}-{{ value | escape }}"
+                                    >
+                                    <span class="qv_option-text">{{ value | escape }}</span>
+                                    <span class="qv-color-line" style="background: {{ value |  downcase |  default: transparent }}"></span>
+                                </label>
+                            {%- endfor -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                    <div class="qv_option--item qv_option--dropdown" id="ProductSelect-option-{{ forloop.index0 }}">
+                        <label class="option-label">
+                            {{ option.name | escape }}
+                        </label>
+                        <div class="custom-dropdown" id="ProductSelect-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+                            <div class="custom-dropdown__selected">
+                                Choose your size
+                            </div>
+                            <ul class="custom-dropdown__options">
+                                <li class="custom-dropdown__option" data-value="">Choose your size</li>
+                                    {%- for value in option.values -%}
+                                <li class="custom-dropdown__option {% if option.selected_value == value %}selected{% endif %}" 
+                                    data-value="{{ value | escape }}">
+                                    {{ value | escape }}
+                                </li>
+                                {%- endfor -%}
+                            </ul>
+                            <input class="custom-radio-btn" type="radio" name="options[option{{ forloop.index }}]" checked value="">
+                        </div>
+                        {% comment  %}
+                            <select id="ProductSelect-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+                                {%- for value in option.values -%}
+                                <option
+                                    value="{{ value | escape }}"
+                                    {% if option.selected_value == value %}
+                                    selected="selected"
+                                    {% endif %}
+                                >
+                                    {{ value | escape }}
+                                </option>
+                                {%- endfor -%}
+                            </select>
+                        {% endcomment %}
+                    </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
+          </div>
+          <div class="qv__cart--submit" buy-buttons>
+            <button
+              qv-button-atc
+              {% unless product.selected_or_first_available_variant.available %}
+                disabled="true"
+              {% endunless %}
+            >
+              <span>{% if product.selected_or_first_available_variant.available %} Add To Cart {% else %} Sold Out {% endif %}</span>
+              {% render 'button-arrow' %}
+            </button>
+          </div>
+        {% endform %}
+    </div>
+    <script type="application/ld+json">
+        {{ product | json }}
+    </script>
+</div>
+
